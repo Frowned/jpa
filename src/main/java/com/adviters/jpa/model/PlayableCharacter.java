@@ -17,6 +17,15 @@ public class PlayableCharacter {
     private double height;
     private int weight;
     private int bagId;
+    private String sex;
+
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
+
+    public String getSex() {
+        return sex;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -58,7 +67,7 @@ public class PlayableCharacter {
         this.id = id;
     }
     public PlayableCharacter(){}
-    public PlayableCharacter(String name, int age, double height, int weight, int bagId, int id)
+    public PlayableCharacter(String name, int age, double height, int weight, int bagId, int id, String sex)
     {
         setName(name);
         setAge(age);
@@ -66,6 +75,7 @@ public class PlayableCharacter {
         setWeight(weight);
         setBagId(bagId);
         setId(id);
+        setSex(sex);
     }
     public void showCharacterInfo()
     {
