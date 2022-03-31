@@ -19,6 +19,10 @@ public class PlayableCharacter {
     private int bagId;
     private String sex;
 
+    public int getId() {
+        return id;
+    }
+
     public void setSex(String sex) {
         this.sex = sex;
     }
