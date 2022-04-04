@@ -19,6 +19,11 @@ public class PlayableCharacterController {
     @Autowired
     PlayableCharacterService service;
 
+    @GetMapping("getPredictedAgeByName")
+    public Object getPredictedAgeByName(String name) {
+        return service.getPredictedAgeByName(name);
+    }
+
     @GetMapping
     public PlayableCharacter getCharacterById(int id) throws Exception {
         return service.getById(id);

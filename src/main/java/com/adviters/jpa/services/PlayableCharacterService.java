@@ -1,13 +1,19 @@
 package com.adviters.jpa.services;
 
+import com.adviters.jpa.config.ConfigProperties;
 import com.adviters.jpa.exceptions.PlayableCharacterAgeException;
 import com.adviters.jpa.model.PlayableCharacter;
+import com.adviters.jpa.model.PredictedAge;
 import com.adviters.jpa.repositories.IPlayableCharacterRepository;
 import org.apache.logging.slf4j.SLF4JLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestOperations;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.NoSuchElementException;
 
@@ -15,11 +21,21 @@ import java.util.NoSuchElementException;
 public class PlayableCharacterService {
     private static final Logger logger = LoggerFactory.getLogger(SLF4JLogger.class);
     private IPlayableCharacterRepository repository;
+    private RestTemplate restTemplate;
+    @Autowired
+    private ConfigProperties properties;
 
     @Autowired
-    public PlayableCharacterService(IPlayableCharacterRepository repository)
+    public PlayableCharacterService(IPlayableCharacterRepository repository, RestTemplateBuilder builder)
     {
         this.repository = repository;
+        this.restTemplate = builder.build();
+    }
+
+    public PredictedAge getPredictedAgeByName(String name)
+    {
+        return restTemplate
+                .getForObject(properties.getUrl() + name, PredictedAge.class);
     }
 
     public PlayableCharacter getById(int id) throws Exception {

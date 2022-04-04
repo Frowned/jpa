@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 
 import java.util.Optional;
 
@@ -22,33 +23,42 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @SpringBootTest
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class PlayableCharacterServiceTests {
-    PlayableCharacterService service;
+    private PlayableCharacterService service;
 
     @Mock
     IPlayableCharacterRepository repository;
+
+    @Mock
+    RestTemplateBuilder restTemplateBuilder;
 
     @BeforeAll
     void setUp() {
         // Usamos esto para inicializar los mocks
         MockitoAnnotations.openMocks(this);
-        service = new PlayableCharacterService(repository);
-    }
+        service = new PlayableCharacterService(repository,restTemplateBuilder);
 
-    @Test
-    void plusNumberTest() {
-        var x = 5;
-        var y = 6;
-		assertEquals(11, x+y);
-    }
-
-    @Test
-    void getCharacterTest() throws Exception {
         String name = "Juan";
         int age = 35;
         double height = 1.55;
         int weight = 150;
         var character = new PlayableCharacter(name, age, height, weight, 0, 0, "H");
         Mockito.when(repository.findById(2)).thenReturn(Optional.of(character));
+    }
+
+    @Test
+    void plusNumberTest() {
+        var x = 5;
+        var y = 6;
+
+		assertEquals(11, plusNumber(x,y));
+    }
+
+    int plusNumber(int x, int y){
+        return x + y;
+    }
+
+    @Test
+    void getCharacterTest() throws Exception {
         var result = service.getById(2);
         assertNotNull(result);
     }
